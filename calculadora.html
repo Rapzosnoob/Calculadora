@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Calculadora</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #Resultados {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <form onreset="document.getElementById('Resultados').innerHTML = ''">
+    <h1>Calculadora Soldador</h1>
+
+    <p>Requerimiento</p>
+    <select id="trabajo" onchange="cambiarCampo()">
+        <option value="cantidad">Cantidad de barrotes</option>
+        <option value="espacio">Espacio de claro</option>
+    </select>
+
+    <h2>Medidas</h2>
+    <p>Largo del claro</p>
+    <input id="largoclaro" type="number" placeholder="Ej. 150">
+    <p>Ancho de barrote</p>
+    <input id="anchobarrote" type="number" placeholder="Ej. 7.56">
+    <p id="tercerLabel">Espacio entre barrotes</p>
+    <input id="tercerValor" type="number" placeholder="Ej. 10">
+
+    <br><br>
+    <button type="button" onclick="calculo()">Calcular</button>
+    <input type="reset" value="borrartodo">
+    <label>Resultados</label>
+    <output id="Resultados"></output>
+    </form>
+
+    <script>
+        // Cambia el label y placeholder según el requerimiento
+        function cambiarCampo() {
+            let trabajo = document.getElementById('trabajo').value;
+            let label = document.getElementById('tercerLabel');
+            let input = document.getElementById('tercerValor');
+
+            if (trabajo === 'cantidad') {
+                label.textContent = 'Espacio entre barrotes';
+                input.placeholder = 'Ej. 10';
+            } else {
+                label.textContent = 'Cantidad de barrotes';
+                input.placeholder = 'Ej. 15';
+            }
+        }
+
+        function calculo() {
+            let trabajo = document.getElementById('trabajo').value;
+            let L = parseFloat(document.getElementById('largoclaro').value);
+            let B = parseFloat(document.getElementById('anchobarrote').value);
+            let T = parseFloat(document.getElementById('tercerValor').value);
+
+            if (isNaN(L) || isNaN(B) || isNaN(T)) {
+                alert("Por favor complete todos los campos");
+                return;
+            }
+
+            let resultado = '';
+
+            if (trabajo === 'cantidad') {
+                // T = espacio deseado → calcular N
+                let N = Math.floor((L - T) / (B + T)) + 1;
+                let espacios = N + 1;
+                let espacioReal = (L - (N * B)) / espacios;
+
+                resultado =
+                    '<p>Cantidad de barrotes: <strong>' + N + '</strong></p>' +
+                    '<p>Espacios: ' + espacios + '</p>' +
+                    '<p>Espacio real: ' + espacioReal.toFixed(2) + ' cm</p>';
+
+            } else {
+                // T = cantidad de barrotes → calcular espacio
+                let N = T;
+                let espacios = N + 1;
+                let espacioReal = (L - (N * B)) / espacios;
+
+                resultado =
+                    '<p>Espacio entre barrotes: <strong>' + espacioReal.toFixed(2) + '</strong> cm</p>' +
+                    '<p>Espacios: ' + espacios + '</p>' +
+                    '<p>Longitud ocupada por barrotes: ' + (N * B).toFixed(2) + ' cm</p>';
+            }
+
+            document.getElementById('Resultados').innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>   
