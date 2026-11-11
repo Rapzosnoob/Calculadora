@@ -34,6 +34,4 @@ Esta herramienta te permite:
 
 Simplemente abre el archivo `calculadora.html` en cualquier navegador web. No requiere servidor ni conexión a internet.
 
-## Autor
 
-[Rapzosnoob](https://github.com/Rapzosnoob)
